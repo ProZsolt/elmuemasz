@@ -1,39 +1,55 @@
 package elmuemasz
 
 import (
+	"context"
 	"os"
 	"testing"
-	"time"
+
+	"golang.org/x/oauth2"
 )
 
 func TestThings(t *testing.T) {
 	username := os.Getenv("ELMU_USERNAME")
 	password := os.Getenv("ELMU_PASSWORD")
+	vevoID := os.Getenv("ELMU_VEVO")
+	felhelyID := os.Getenv("ELMU_FELHELY")
 
 	user := User{Username: username,
 		Password: password,
 	}
-
-	ac, err := getAuthCode(user)
+	ts, err := NewTokenSource(user)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
-	token, err := getToken(ac)
+	client := oauth2.NewClient(context.Background(), ts)
+	srv := NewService(client)
+	vevok, err := srv.Vevok()
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Errorf("Unexpected error: %v", err)
 	}
-	time.Sleep(time.Duration(10) * time.Second)
-
-	token, err = renewToken(token)
+	want := vevoID
+	got := vevok[0].ID
+	if want != got {
+		t.Errorf("Got this: %v", vevok[0])
+	}
+	felhelyek, err := srv.Felhelyek()
 	if err != nil {
-		t.Fatalf("Unexpected error: %v", err)
+		t.Errorf("Unexpected error: %v", err)
+	}
+	want = felhelyID
+	got = felhelyek[0].ID
+	if want != got {
+		t.Errorf("Got this: %v", felhelyek[0])
 	}
 
-	// ctx := context.Background()
-	// ts := oauth2.StaticTokenSource(&token)
-	// client := oauth2.NewClient(ctx, ts)
-	// _, err client.Get("http://example.com")
-	// if err != nil {
-	// 	t.Fatalf("Unexpected error: %v", err)
-	// }
+	eSzamlak, err := srv.ESzamlak()
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	want = vevoID
+	got = eSzamlak[0].Vevo
+	if want != got {
+		t.Errorf("Got this: %v", eSzamlak[0])
+	}
+
 }
