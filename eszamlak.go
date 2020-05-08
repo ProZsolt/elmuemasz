@@ -1,5 +1,7 @@
 package elmuemasz
 
+import "net/url"
+
 type eSzamlakResponse struct {
 	D struct {
 		Results []ESzamla `json:"results"`
@@ -25,7 +27,7 @@ type ESzamla struct {
 
 func (s Service) ESzamlak() ([]ESzamla, error) {
 	var resp eSzamlakResponse
-	err := s.get("/ESzamlak", &resp)
+	err := s.get("/ESzamlak", url.Values{}, &resp)
 	if err != nil {
 		return []ESzamla{}, err
 	}

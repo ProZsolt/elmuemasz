@@ -1,5 +1,7 @@
 package elmuemasz
 
+import "net/url"
+
 type vevokResponse struct {
 	D struct {
 		Results []Vevo `json:"results"`
@@ -28,7 +30,7 @@ type Vevo struct {
 
 func (s Service) Vevok() ([]Vevo, error) {
 	var resp vevokResponse
-	err := s.get("/Vevok", &resp)
+	err := s.get("/Vevok", url.Values{}, &resp)
 	if err != nil {
 		return []Vevo{}, err
 	}

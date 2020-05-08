@@ -1,5 +1,7 @@
 package elmuemasz
 
+import "net/url"
+
 type felhelyekResponse struct {
 	D struct {
 		Results []Felhely `json:"results"`
@@ -15,7 +17,7 @@ type Felhely struct {
 
 func (s Service) Felhelyek() ([]Felhely, error) {
 	var resp felhelyekResponse
-	err := s.get("/Felhelyek", &resp)
+	err := s.get("/Felhelyek", url.Values{}, &resp)
 	if err != nil {
 		return []Felhely{}, err
 	}

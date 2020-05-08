@@ -52,4 +52,15 @@ func TestThings(t *testing.T) {
 		t.Errorf("Got this: %v", eSzamlak[0])
 	}
 
+	filter := SzamlakFilter{
+		Vevo: vevoID,
+	}
+	szamlak, err := srv.Szamlak(filter)
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	err = srv.DownloadPDF(szamlak[0], "responses")
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 }
