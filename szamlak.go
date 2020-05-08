@@ -100,7 +100,22 @@ func msDatetimeToTime(in string) time.Time {
 func (s Service) DownloadPDF(szamla Szamla, filePath string) error {
 
 	layout := "2006-01-02T00:00:00"
-	path := fmt.Sprintf("/ESzamlaPDFXMLek(Tipus='P',Vevo='%s',Felhely='%s',Szlaszam='%s',DatumTol=datetime'%s',DatumIg=datetime'%s')/$value",
+	path := fmt.Sprintf("/ESzamlaPDFXMLek(Tipus='%s',Vevo='%s',Felhely='%s',Szlaszam='%s',DatumTol=datetime'%s',DatumIg=datetime'%s')/$value",
+		"P",
+		szamla.Vevo,
+		szamla.Felhely,
+		szamla.Szamlaszam,
+		msDatetimeToTime(szamla.SzamlaKelte).AddDate(0, -3, 0).Format(layout),
+		msDatetimeToTime(szamla.SzamlaKelte).AddDate(0, 3, 0).Format(layout),
+	)
+	return s.download(path, filePath)
+}
+
+func (s Service) DownloadXML(szamla Szamla, filePath string) error {
+
+	layout := "2006-01-02T00:00:00"
+	path := fmt.Sprintf("/ESzamlaPDFXMLek(Tipus='%s',Vevo='%s',Felhely='%s',Szlaszam='%s',DatumTol=datetime'%s',DatumIg=datetime'%s')/$value",
+		"X",
 		szamla.Vevo,
 		szamla.Felhely,
 		szamla.Szamlaszam,

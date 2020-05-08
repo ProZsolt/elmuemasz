@@ -107,9 +107,7 @@ func (s Service) download(path string, filePath string) error {
 	if err != nil {
 		return err
 	}
-	req.Header.Add("Connection", "keep-alive")
 	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Accept-Encoding", "gzip, deflate, br")
 
 	q := req.URL.Query()
 	q.Add("sap-client", "201")

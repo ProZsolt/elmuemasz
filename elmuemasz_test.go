@@ -63,4 +63,8 @@ func TestThings(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
+	err = srv.DownloadXML(szamlak[0], "responses")
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
 }
