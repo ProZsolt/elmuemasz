@@ -3,6 +3,8 @@ package elmuemasz
 import (
 	"fmt"
 	"net/url"
+	"strconv"
+	"time"
 )
 
 type meroDiktalasResponse struct {
@@ -66,4 +68,51 @@ func (s Service) MeroDiktalasok(felhely Felhely) ([]MeroDiktalas, error) {
 		return []MeroDiktalas{}, err
 	}
 	return resp.D.Results, nil
+}
+
+type MeroDiktalasPayload struct {
+	Vevo           string            `json:"Vevo"`
+	Felhely        string            `json:"Felhely"`
+	LeolvasasDatum string            `json:"LeolvasasDatum"`
+	Megerosites    bool              `json:"Megerosites"`
+	ArAfaCheck     bool              `json:"ArAfaCheck"`
+	Rogzites       []RogzitesPayload `json:"Rogzites"`
+}
+type RogzitesPayload struct {
+	MeroAzonosito string `json:"MeroAzonosito"`
+	Szamlalo      string `json:"Szamlalo"`
+	AktAllas      string `json:"AktAllas"`
+	LeolvasasOka  string `json:"LeolvasasOka"`
+}
+
+func MeroDiktalasPayloadFromMeroDiktalas(md MeroDiktalas, ld time.Time, aa int) MeroDiktalasPayload {
+	layout := "2006-01-02T00:00:00"
+	return MeroDiktalasPayload{
+		Vevo:           md.Vevo,
+		Felhely:        md.Felhely,
+		LeolvasasDatum: ld.Format(layout),
+		Megerosites:    md.Megerosites,
+		ArAfaCheck:     md.ArAfaCheck,
+		Rogzites: []RogzitesPayload{
+			{
+				MeroAzonosito: md.MeroAzonosito,
+				Szamlalo:      md.Szamlalo,
+				AktAllas:      strconv.Itoa(aa),
+				LeolvasasOka:  md.LeolvasasOka,
+			},
+		},
+	}
+}
+
+func (s Service) MeroDiktalasPost(payload MeroDiktalasPayload) (MeroDiktalas, error) {
+	var resp meroDiktalasPostResponse
+	path := fmt.Sprintf("/Felhelyek(Vevo='%s',Id='%s')/MeroDiktalas",
+		payload.Vevo,
+		payload.Felhely,
+	)
+	err := s.post(path, payload, &resp)
+	if err != nil {
+		return MeroDiktalas{}, err
+	}
+	return resp.D, nil
 }
