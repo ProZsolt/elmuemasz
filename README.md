@@ -28,10 +28,10 @@ func main() {
     // handle error
   }
   client := oauth2.NewClient(context.Background(), ts)
-  srv := NewService(client)
+  srv := elmuemasz.NewService(client)
 
   // Download the last 3 months of Invoices
-  filter := SzamlakFilter{
+  filter := elmuemasz.SzamlakFilter{
     SzamlaKelteTol: time.Now().AddDate(0, -3, 0),
     SzamlaKelteIg:  time.Now(),
   }
@@ -55,7 +55,7 @@ func main() {
   if err != nil {
     // handle error
   }
-  payload := MeroDiktalasPayloadFromMeroDiktalas(merodiktalasok[0], time.Now(), 1337)
+  payload := elmuemasz.MeroDiktalasPayloadFromMeroDiktalas(merodiktalasok[0], time.Now(), 1337)
   _, err := srv.MeroDiktalasPost(payload)
 }
 ```
