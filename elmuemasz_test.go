@@ -13,7 +13,7 @@ func TestThings(t *testing.T) {
 	password := os.Getenv("ELMU_PASSWORD")
 	vevoID := os.Getenv("ELMU_VEVO")
 	felhelyID := os.Getenv("ELMU_FELHELY")
-	utolsoFogyasztas := os.Getenv("ELMU_FOGYASZTAS")
+	mero := os.Getenv("ELMU_MERO")
 
 	user := User{Username: username,
 		Password: password,
@@ -57,10 +57,20 @@ func TestThings(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	want = utolsoFogyasztas
-	got = meroallasok[0].Fogyasztas
+	want = mero
+	got = meroallasok[0].Gyariszam
 	if want != got {
 		t.Errorf("Got this: %v", meroallasok[0])
+	}
+
+	merodiktalasok, err := srv.MeroDiktalasok(felhelyek[0])
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+	want = mero
+	got = merodiktalasok[0].MeroAzonosito
+	if want != got {
+		t.Errorf("Got this: %v", merodiktalasok[0])
 	}
 
 	filter := SzamlakFilter{
