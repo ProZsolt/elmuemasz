@@ -106,6 +106,7 @@ func getAuthCode(user User) (string, error) {
 	if err != nil {
 		return authCode, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -149,6 +150,7 @@ func getToken(authCode string) (oauth2.Token, error) {
 	if err != nil {
 		return token, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -200,6 +202,7 @@ func renewToken(oldToken oauth2.Token) (oauth2.Token, error) {
 	if err != nil {
 		return token, err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

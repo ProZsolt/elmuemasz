@@ -37,6 +37,7 @@ func (s Service) get(path string, query url.Values, response interface{}) error 
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -80,6 +81,7 @@ func (s Service) post(path string, data interface{}, response interface{}) error
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
@@ -117,6 +119,7 @@ func (s Service) download(path string, filePath string) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
 		body, err := ioutil.ReadAll(resp.Body)
