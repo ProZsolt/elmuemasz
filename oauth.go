@@ -113,7 +113,7 @@ func getAuthCode(user User) (string, error) {
 		return authCode, err
 	}
 
-	if resp.StatusCode != 201 {
+	if resp.StatusCode != http.StatusCreated {
 		var errorResp Error
 		err = json.Unmarshal(body, &errorResp)
 		if err != nil {
@@ -157,7 +157,7 @@ func getToken(authCode string) (oauth2.Token, error) {
 		return token, err
 	}
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 		var errorResp Error
 		err = json.Unmarshal(body, &errorResp)
 		if err != nil {
@@ -209,7 +209,7 @@ func renewToken(oldToken oauth2.Token) (oauth2.Token, error) {
 		return token, err
 	}
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 		var errorResp Error
 		err = json.Unmarshal(body, &errorResp)
 		if err != nil {

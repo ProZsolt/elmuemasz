@@ -44,7 +44,7 @@ func (s Service) get(path string, query url.Values, response interface{}) error 
 		return err
 	}
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 		var errorResp Error
 		err = json.Unmarshal(body, &errorResp)
 		if err != nil {
@@ -88,7 +88,7 @@ func (s Service) post(path string, data interface{}, response interface{}) error
 		return err
 	}
 
-	if resp.StatusCode != 201 {
+	if resp.StatusCode != http.StatusCreated {
 		var errorResp Error
 		err = json.Unmarshal(body, &errorResp)
 		if err != nil {
@@ -121,7 +121,7 @@ func (s Service) download(path string, filePath string) error {
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != 200 {
+	if resp.StatusCode != http.StatusOK {
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return err
