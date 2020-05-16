@@ -40,7 +40,7 @@ func main() {
     // handle error
   }
   for _, szamla := range szamlak {
-    err = srv.DownloadPDF(szamla, "destinationDir")
+    err = srv.DownloadPDF(szamla, "destinationDir/"+szamla.Szamlaszam+".pdf")
     if err != nil {
       // handle error
     }
