@@ -80,11 +80,11 @@ func TestThings(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	err = srv.DownloadPDF(szamlak[0], "responses")
+	err = srv.DownloadPDF(szamlak[0], "responses/"+szamlak[0].Szamlaszam+".pdf")
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
-	err = srv.DownloadXML(szamlak[0], "responses")
+	err = srv.DownloadXML(szamlak[0], "responses/"+szamlak[0].Szamlaszam+".xml")
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}

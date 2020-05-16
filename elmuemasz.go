@@ -5,11 +5,9 @@ import (
 	"encoding/json"
 	"io"
 	"io/ioutil"
-	"mime"
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 )
 
 const baseURL string = "https://ker.elmuemasz.hu/sap/opu/odata/sap"
@@ -104,7 +102,7 @@ func (s Service) post(path string, data interface{}, response interface{}) error
 	return nil
 }
 
-func (s Service) download(path string, filePath string) error {
+func (s Service) download(path string, filename string) error {
 	req, err := http.NewRequest(http.MethodGet, serviceURL+path, nil)
 	if err != nil {
 		return err
@@ -134,14 +132,7 @@ func (s Service) download(path string, filePath string) error {
 		return errorResp
 	}
 
-	contentDisposition := resp.Header.Get("Content-Disposition")
-	_, params, err := mime.ParseMediaType(contentDisposition)
-	if err != nil {
-		return err
-	}
-	fileName := params["filename"]
-
-	out, err := os.Create(filepath.Join(filePath, fileName))
+	out, err := os.Create(filename)
 	if err != nil {
 		return err
 	}

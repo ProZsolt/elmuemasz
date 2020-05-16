@@ -4,7 +4,7 @@
 
 Download it using
 
-``go get github.com/prozsolt/elmuemasz``
+```go get github.com/prozsolt/elmuemasz```
 
 ## Usage
 
