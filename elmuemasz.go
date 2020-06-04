@@ -64,7 +64,7 @@ func (s Service) post(path string, data interface{}, response interface{}) error
 		return err
 	}
 
-	req, err := http.NewRequest(http.MethodGet, serviceURL+path, bytes.NewBuffer(jsonValue))
+	req, err := http.NewRequest(http.MethodPost, serviceURL+path, bytes.NewBuffer(jsonValue))
 	if err != nil {
 		return err
 	}
