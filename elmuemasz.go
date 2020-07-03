@@ -70,6 +70,7 @@ func (s Service) post(path string, data interface{}, response interface{}) error
 	}
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
+	req.Header.Add("X-Requested-With", "X")
 
 	q := req.URL.Query()
 	q.Add("sap-client", "201")
